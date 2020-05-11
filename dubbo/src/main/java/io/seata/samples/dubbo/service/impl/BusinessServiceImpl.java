@@ -17,6 +17,7 @@
 package io.seata.samples.dubbo.service.impl;
 
 import io.seata.core.context.RootContext;
+import io.seata.samples.dubbo.Order;
 import io.seata.samples.dubbo.service.BusinessService;
 import io.seata.samples.dubbo.service.OrderService;
 import io.seata.samples.dubbo.service.StorageService;
@@ -41,8 +42,16 @@ public class BusinessServiceImpl implements BusinessService {
     @GlobalTransactional(timeoutMills = 300000, name = "dubbo-demo-tx")
     public void purchase(String userId, String commodityCode, int orderCount) {
         LOGGER.info("purchase begin ... xid: " + RootContext.getXID());
-        storageService.deduct(commodityCode, orderCount);
-        orderService.create(userId, commodityCode, orderCount);
+        /*storageService.deduct(commodityCode, orderCount);
+        orderService.create(userId, commodityCode, orderCount);*/
+        int deduct = storageService.deduct(commodityCode, orderCount);
+        if (deduct <= 0) {
+            throw new RuntimeException("库存扣减失败");
+        }
+        Order order = orderService.create(userId, commodityCode, orderCount);
+        if (order == null || order.id <= 0) {
+            throw new RuntimeException("订单创建失败");
+        }
         //throw new RuntimeException("xxx");
 
     }

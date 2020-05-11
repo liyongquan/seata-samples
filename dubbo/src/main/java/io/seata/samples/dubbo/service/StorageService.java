@@ -27,5 +27,5 @@ public interface StorageService {
      * @param commodityCode 商品编号
      * @param count         扣减数量
      */
-    void deduct(String commodityCode, int count);
+    int deduct(String commodityCode, int count);
 }

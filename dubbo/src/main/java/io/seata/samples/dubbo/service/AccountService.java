@@ -27,5 +27,5 @@ public interface AccountService {
      * @param userId 用户ID
      * @param money  扣款金额
      */
-    void debit(String userId, int money);
+    int debit(String userId, int money);
 }

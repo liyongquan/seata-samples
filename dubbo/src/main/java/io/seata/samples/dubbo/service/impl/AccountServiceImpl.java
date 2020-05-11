@@ -44,11 +44,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void debit(String userId, int money) {
+    public int debit(String userId, int money) {
         LOGGER.info("Account Service ... xid: " + RootContext.getXID());
         LOGGER.info("Deducting balance SQL: update account_tbl set money = money - {} where user_id = {}",money,userId);
 
-        jdbcTemplate.update("update account_tbl set money = money - ? where user_id = ?", new Object[] {money, userId});
+        int update = jdbcTemplate.update("update account_tbl set money = money - ? where user_id = ? and money>= ?",
+                new Object[]{money, userId, money});
         LOGGER.info("Account Service End ... ");
+        return update;
     }
 }
