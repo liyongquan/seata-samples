@@ -50,6 +50,11 @@ public class AccountServiceImpl implements AccountService {
 
         int update = jdbcTemplate.update("update account_tbl set money = money - ? where user_id = ? and money>= ?",
                 new Object[]{money, userId, money});
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         LOGGER.info("Account Service End ... ");
         return update;
     }

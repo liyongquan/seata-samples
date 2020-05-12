@@ -36,9 +36,20 @@
 
     <dubbo:reference id="orderService" check="false" interface="io.seata.samples.dubbo.service.OrderService"/>
     <dubbo:reference id="storageService" check="false" interface="io.seata.samples.dubbo.service.StorageService"/>
+    <dubbo:reference id="accountService" check="false" interface="io.seata.samples.dubbo.service.AccountService"/>
 
     <bean id="business" class="io.seata.samples.dubbo.service.impl.BusinessServiceImpl">
         <property name="orderService" ref="orderService"/>
+        <property name="storageService" ref="storageService"/>
+    </bean>
+
+    <bean id="business1" class="io.seata.samples.dubbo.service.impl.BusinessLockServiceImpl1">
+        <property name="accountService" ref="accountService"/>
+        <property name="storageService" ref="storageService"/>
+    </bean>
+
+    <bean id="business2" class="io.seata.samples.dubbo.service.impl.BusinessLockServiceImpl2">
+        <property name="accountService" ref="accountService"/>
         <property name="storageService" ref="storageService"/>
     </bean>
 

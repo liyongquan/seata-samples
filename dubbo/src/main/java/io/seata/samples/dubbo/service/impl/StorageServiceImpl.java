@@ -48,9 +48,13 @@ public class StorageServiceImpl implements StorageService {
         LOGGER.info("Storage Service Begin ... xid: " + RootContext.getXID());
         LOGGER.info("Deducting inventory SQL: update storage_tbl set count = count - {} where commodity_code = {}",
             count, commodityCode);
-
         int affectRow = jdbcTemplate.update("update storage_tbl set count = count - ? where commodity_code = ? and count >= ?",
                 new Object[]{count, commodityCode, count});
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         LOGGER.info("Storage Service End ... affectRow:{}", affectRow);
         return affectRow;
     }
